@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+
+
+import React from 'react'; 6.9k (gzipped: 2.7k)
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const element = <h1>My List</h1>;
+  const elem = React.createElement("h2", null, "List");
+  const el = (
+    <div>
+      <h3>App to Do</h3>
+      <input type='text'/>
+    </div>
+  )
+  const list = [
+    {id: 1, title: 'do homework'},
+    {id: 2, title: 'cook a cake'},
+  ]
+
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <ul>
+        {list.map((id, title) => (<li key={id}>{title}</li>))}
+      </ul>
+    </div>
   )
 }
 
-export default App
+
+export default App;
+
