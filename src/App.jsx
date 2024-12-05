@@ -1,6 +1,8 @@
 import React, { useState } from "react"; // Import useState from React
-//import TodoList from "./TodoList"; // Import the new component
 import AddTodoForm from "./AddTodoForm"; // Import the new component
+import TodoList from "./TodoList"; // Import the new component
+
+// import TodoList from "./TodoList";
 
 // Step 5: Create an empty array with todo items
 // const todoList = [
@@ -9,16 +11,25 @@ import AddTodoForm from "./AddTodoForm"; // Import the new component
 //   { id: 3, title: "Take out the trash" },
 // ];
 
-function App() {
-  const [newTodo, setNewTodo] = useState("");
+export default function App() {
+  // const [newTodo, setNewTodo] = useState("");
+
+  // State for Todo List
+  const [todoList, setTodoList] = useState([]);
+
+  // Function to add a new todo
+  const addTodo = (newTodo) => {
+    setTodoList((prevTodos) => [...prevTodos, newTodo]); // Add new todo to list
+  };
 
   return (
     <div>
       {/* Step 3: Create a level-one heading */}
       <h1>Todo List</h1>
       {/*<TodoList />*/}
-      <AddTodoForm onAddTodo={setNewTodo} />
-      <p>{newTodo}</p>
+      <AddTodoForm onAddTodo={addTodo} /> {/* Pass addTodo as prop */}
+      <TodoList todoList={todoList} />
+      {/* <p>{newTodo}</p> */}
       {/* Step 4: Create an unordered list and map over the todoList array */}
       {/* <ul>
         {TodoList.map((item) => (
@@ -28,5 +39,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
