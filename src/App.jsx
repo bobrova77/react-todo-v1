@@ -1,6 +1,22 @@
-import React, { useState } from "react"; // Import useState from React
+// import React, { useState, useEffect } from "react"; // Import useState from React
+import React from "react";
 import AddTodoForm from "./AddTodoForm"; // Import the new component
 import TodoList from "./TodoList"; // Import the new component
+
+// 6.8 Custom Hook
+function useSemiPersistentState(key, initialState) {
+  // 6.9 Read initial state from localStorage
+  const [state, setState] = React.useState(() => {
+    const savedValue = localStorage.getItem(key);
+    return savedValue ? JSON.parse(savedValue) : initialState;
+  });
+
+  // 6.10 Persist state in localStorage whenever it changes
+  React.useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+  return [state, setState];
+}
 
 // import TodoList from "./TodoList";
 
@@ -12,18 +28,50 @@ import TodoList from "./TodoList"; // Import the new component
 // ];
 
 export default function App() {
+  // 6.11 Use the custom hook for todoList state
+  const [todoList, setTodoList] = useSemiPersistentState("savedTodoList", []);
   // const [newTodo, setNewTodo] = useState("");
 
   // State for Todo List
-  const [todoList, setTodoList] = useState([]);
+  // 6.2
+  // 6.12 Delete
+  // const [todoList, setTodoList] = useState(() => {
+  //   const savedTodos = localStorage.getItem("savedTodoList");
+  // // 6.4 Default State with Fallback:
+  // try {
+  //   return savedTodos ? JSON.parse(savedTodos) : [];
+  // } catch (error) {
+  //   console.error("Error parsing saved todo list from localStorage:", error);
+  //   return [];
+  // }
+  // 6.6 Parse the JSON string back to an array
+  // 6.15 Delete
+  // return savedTodos ? JSON.parse(savedTodos) : [];
 
-  // Function to add a new todo
+  // 6.14 Function to add a new todo
   const addTodo = (newTodo) => {
-    setTodoList((prevTodos) => [...prevTodos, newTodo]); // Add new todo to list
+    setTodoList((prevTodos) => [...prevTodos, newTodo]);
   };
 
+  // Step 6.1: Add useEffect
+  // Save the todoList to localStorage whenever it changes
+  // 6.15 DElete
+  // useEffect(() => {
+  // Save the todoList to localStorage
+  // 6.3 Convert the todoList into a string before saving
+  // 6.5 The useEffect hook ensures the state is saved to localStorage whenever todoList changes
+  // localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+  // }, [todoList]); // Step 6.2: Add todoList as a dependency
+
+  // Function to add a new todo
+  // 6.13 Cut
+  // const addTodo = (newTodo) => {
+  //   // setTodoList((prevTodos) => [newTodo, ...prevTodos]); // Add new todo to list furst
+  //   // 6.7 Add the new todo
+  //   setTodoList((prevTodos) => [...prevTodos, newTodo]);
+
   return (
-    <div>
+    <>
       {/* Step 3: Create a level-one heading */}
       <h1>Todo List</h1>
       {/*<TodoList />*/}
@@ -32,10 +80,10 @@ export default function App() {
       {/* <p>{newTodo}</p> */}
       {/* Step 4: Create an unordered list and map over the todoList array */}
       {/* <ul>
-        {TodoList.map((item) => (
-          <li key={item.id}>{item.title}</li>
-        ))}
-      </ul> */}
-    </div>
+          {TodoList.map((item) => (
+            <li key={item.id}>{item.title}</li>
+          ))}
+        </ul> */}
+    </>
   );
 }
