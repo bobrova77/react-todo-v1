@@ -28,11 +28,16 @@ import TodoListItem from "./TodoListItem";
 // }
 // export default TodoList;
 
-const TodoList = ({ todoList }) => {
+// 7.22 Remove
+// onst TodoList = ({ todoList }) => {
+// 7.23 Pass onRemoveTodo to the TodoListItem component
+const TodoList = ({ todoList, onRemoveTodo }) => {
   return (
     <ul>
+      {/* <TodoListItem key={todo.id} todo={todo} /> */}
+      {/* 7.24 */}
       {todoList.map((todo) => (
-        <TodoListItem key={todo.id} todo={todo} />
+        <TodoListItem key={todo.id} todo={todo} onRemoveTodo={onRemoveTodo} />
       ))}
     </ul>
   );
