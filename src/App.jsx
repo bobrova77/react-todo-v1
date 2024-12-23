@@ -91,32 +91,129 @@ import TodoList from "./TodoList"; // Import the new component
 
 // 7.21 Add a removeTodo handler function and pass it as a prop to TodoList.
 
-const App = () => {
-  const [todoList, setTodoList] = useState(() => {
-    const savedTodos = localStorage.getItem("savedTodoList");
-    return savedTodos ? JSON.parse(savedTodos) : [];
-  });
+// const App = () => {
+//   const [todoList, setTodoList] = useState(() => {
+//     const savedTodos = localStorage.getItem("savedTodoList");
+//     return savedTodos ? JSON.parse(savedTodos) : [];
+//   });
 
+//   useEffect(() => {
+//     localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+//   }, [todoList]);
+
+//   const addTodo = (newTodo) => {
+//     setTodoList((prevTodos) => [...prevTodos, newTodo]);
+//   };
+
+//   const removeTodo = (id) => {
+//     const updatedList = todoList.filter((todo) => todo.id !== id);
+//     setTodoList(updatedList);
+//   };
+
+//   return (
+//     <>
+//       <h1>Todo List</h1>
+//       <AddTodoForm onAddTodo={addTodo} />
+//       <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+//     </>
+//   );
+// };
+
+// export default App;
+
+// 8.1 Remove Custom Hook
+
+export default function App() {
+  // 8.2 Remove
+  // // Use useState directly for managing todoList
+  // const [todoList, setTodoList] = useState(() => {
+  //   // Retrieve and parse the saved todo list from localStorage
+  //   const savedTodoList = localStorage.getItem("savedTodoList");
+  //   return savedTodoList ? JSON.parse(savedTodoList) : [];
+  // });
+  // 8.3 Set initial todoList state to an empty Array
+  const [todoList, setTodoList] = useState([]);
+  // 8.15 Added isLoading State
+  // // 8.6 State for Todo List and Loading
+  // const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 8.4 Remove
+  // // Use useEffect to save the todoList to localStorage on changes
+  // useEffect(() => {
+  //   localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+  // }, [todoList]);
+
+  // 8.5 Simulate async data fetching
   useEffect(() => {
-    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-  }, [todoList]);
+    // 8.7 change without reject
+    // const fetchData = new Promise((resolve, reject) => {
+    const fetchData = new Promise((resolve) => {
+      setTimeout(() => {
+        // Simulate initial todo list data
+        resolve({
+          data: {
+            todoList: [
+              { id: 1, title: "Learn React" },
+              { id: 2, title: "Build a Todo App" },
+            ],
+          },
+        });
+      }, 2000); // 2-second delay to mimic async fetch
+    });
 
+    // 8.12 change response to result
+    // fetchData.then((response) => {
+    fetchData.then((result) => {
+      // Set fetched todo list data
+      // setTodoList(response.data.todoList);
+      setTodoList(result.data.todoList);
+      // setLoading(false); // 8.8 Set loading to false
+      setIsLoading(false); // 8.16 Turn off loading state
+    });
+  }, []);
+
+  // 8.9 Save to localStorage when todoList updates, but only if not loading
+  useEffect(() => {
+    // 8.14 Added isLoading State
+    // if (!loading) {
+    if (!isLoading) {
+      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+    }
+    // }, [todoList, loading]);
+  }, [todoList, isLoading]);
+
+  // Function to add a new todo
   const addTodo = (newTodo) => {
     setTodoList((prevTodos) => [...prevTodos, newTodo]);
   };
 
+  // Function to remove a todo
   const removeTodo = (id) => {
-    const updatedList = todoList.filter((todo) => todo.id !== id);
-    setTodoList(updatedList);
+    setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
+  // 8.10 Change to 8.11
+  // return (
+  //   <>
+  //     <h1>Todo List</h1>
+  //     <AddTodoForm onAddTodo={addTodo} />
+  //     <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+  //   </>
+  // );
+  // 8.11 New version
+  // 8.13 Change {/* {loading ? ( */} to isLoading */}. Added isLoading State
   return (
     <>
       <h1>Todo List</h1>
-      <AddTodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <AddTodoForm onAddTodo={addTodo} />
+          <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+        </>
+      )}
     </>
   );
-};
-
-export default App;
+}
