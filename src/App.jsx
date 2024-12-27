@@ -133,10 +133,11 @@ export default function App() {
   // });
   // 8.3 Set initial todoList state to an empty Array
   const [todoList, setTodoList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // 8.15 Added isLoading State
   // // 8.6 State for Todo List and Loading
   // const [loading, setLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
 
   // 8.4 Remove
   // // Use useEffect to save the todoList to localStorage on changes
@@ -150,6 +151,8 @@ export default function App() {
     // const fetchData = new Promise((resolve, reject) => {
     const fetchData = new Promise((resolve) => {
       setTimeout(() => {
+        const localData =
+          JSON.parse(localStorage.getItem("savedTodoList")) || [];
         // Simulate initial todo list data
         resolve({
           data: {
