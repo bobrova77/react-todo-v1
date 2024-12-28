@@ -195,7 +195,6 @@ export default function App() {
   const removeTodo = (id) => {
     setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
-
   // 8.10 Change to 8.11
   // return (
   //   <>
