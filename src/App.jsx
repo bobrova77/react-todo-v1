@@ -126,18 +126,17 @@ import TodoList from "./TodoList"; // Import the new component
 export default function App() {
   // 8.2 Remove
   // // Use useState directly for managing todoList
-  // const [todoList, setTodoList] = useState(() => {
-  //   // Retrieve and parse the saved todo list from localStorage
-  //   const savedTodoList = localStorage.getItem("savedTodoList");
-  //   return savedTodoList ? JSON.parse(savedTodoList) : [];
-  // });
+  const [todoList, setTodoList] = useState(() => {
+    //   // Retrieve and parse the saved todo list from localStorage
+    const savedTodoList = localStorage.getItem("savedTodoList");
+    return savedTodoList ? JSON.parse(savedTodoList) : [];
+  });
   // 8.3 Set initial todoList state to an empty Array
-  const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [todoList, setTodoList] = useState([]);
   // 8.15 Added isLoading State
   // // 8.6 State for Todo List and Loading
   // const [loading, setLoading] = useState(true);
-  //const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 8.4 Remove
   // // Use useEffect to save the todoList to localStorage on changes
@@ -151,8 +150,6 @@ export default function App() {
     // const fetchData = new Promise((resolve, reject) => {
     const fetchData = new Promise((resolve) => {
       setTimeout(() => {
-        const localData =
-          JSON.parse(localStorage.getItem("savedTodoList")) || [];
         // Simulate initial todo list data
         resolve({
           data: {
@@ -168,9 +165,15 @@ export default function App() {
     // 8.12 change response to result
     // fetchData.then((response) => {
     fetchData.then((result) => {
+      setTodoList((prevTodos) => {
+        // Добавляем данные из фетча, но сохраняем данные из localStorage
+        const savedTodoList = localStorage.getItem("savedTodoList");
+        const localData = savedTodoList ? JSON.parse(savedTodoList) : [];
+        return [...localData, ...result.data.todoList];
+      });
       // Set fetched todo list data
       // setTodoList(response.data.todoList);
-      setTodoList(result.data.todoList);
+      // setTodoList(result.data.todoList);
       // setLoading(false); // 8.8 Set loading to false
       setIsLoading(false); // 8.16 Turn off loading state
     });
@@ -195,6 +198,7 @@ export default function App() {
   const removeTodo = (id) => {
     setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
+
   // 8.10 Change to 8.11
   // return (
   //   <>
