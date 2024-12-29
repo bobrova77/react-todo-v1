@@ -126,13 +126,13 @@ import TodoList from "./TodoList"; // Import the new component
 export default function App() {
   // 8.2 Remove
   // // Use useState directly for managing todoList
-  const [todoList, setTodoList] = useState(() => {
-    //   // Retrieve and parse the saved todo list from localStorage
-    const savedTodoList = localStorage.getItem("savedTodoList");
-    return savedTodoList ? JSON.parse(savedTodoList) : [];
-  });
+  // const [todoList, setTodoList] = useState(() => {
+  //   // Retrieve and parse the saved todo list from localStorage
+  //   const savedTodoList = localStorage.getItem("savedTodoList");
+  //   return savedTodoList ? JSON.parse(savedTodoList) : [];
+  // });
   // 8.3 Set initial todoList state to an empty Array
-  // const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState([]);
   // 8.15 Added isLoading State
   // // 8.6 State for Todo List and Loading
   // const [loading, setLoading] = useState(true);
@@ -153,10 +153,7 @@ export default function App() {
         // Simulate initial todo list data
         resolve({
           data: {
-            todoList: [
-              { id: 1, title: "Learn React" },
-              { id: 2, title: "Build a Todo App" },
-            ],
+            todoList: JSON.parse(localStorage.getItem("savedTodoList")) || [], // Getting todoList from localStorage or an empty array
           },
         });
       }, 2000); // 2-second delay to mimic async fetch
@@ -165,15 +162,9 @@ export default function App() {
     // 8.12 change response to result
     // fetchData.then((response) => {
     fetchData.then((result) => {
-      setTodoList((prevTodos) => {
-        // Добавляем данные из фетча, но сохраняем данные из localStorage
-        const savedTodoList = localStorage.getItem("savedTodoList");
-        const localData = savedTodoList ? JSON.parse(savedTodoList) : [];
-        return [...localData, ...result.data.todoList];
-      });
       // Set fetched todo list data
       // setTodoList(response.data.todoList);
-      // setTodoList(result.data.todoList);
+      setTodoList(result.data.todoList); // Set fetched todoList data
       // setLoading(false); // 8.8 Set loading to false
       setIsLoading(false); // 8.16 Turn off loading state
     });
