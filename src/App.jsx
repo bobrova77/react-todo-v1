@@ -1,8 +1,8 @@
 // import React, { useState, useEffect } from "react"; // Import useState from React
 // import React from "react";
 import React, { useState, useEffect } from "react";
-import AddTodoForm from "./AddTodoForm"; // Import the new component
-import TodoList from "./TodoList"; // Import the new component
+// import AddTodoForm from "./AddTodoForm"; // Import the new component
+// import TodoList from "./TodoList"; // Import the new component
 
 // // 6.8 Custom Hook
 // function useSemiPersistentState(key, initialState) {
@@ -144,73 +144,127 @@ export default function App() {
   //   localStorage.setItem("savedTodoList", JSON.stringify(todoList));
   // }, [todoList]);
 
-  // 8.5 Simulate async data fetching
-  useEffect(() => {
-    // 8.7 change without reject
-    // const fetchData = new Promise((resolve, reject) => {
-    const fetchData = new Promise((resolve) => {
-      setTimeout(() => {
-        // Simulate initial todo list data
-        resolve({
-          data: {
-            todoList: JSON.parse(localStorage.getItem("savedTodoList")) || [], // Getting todoList from localStorage or an empty array
-          },
-        });
-      }, 2000); // 2-second delay to mimic async fetch
-    });
+  // Fetch Data from Airtable
+  const fetchData = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+      },
+    };
 
-    // 8.12 change response to result
-    // fetchData.then((response) => {
-    fetchData.then((result) => {
-      // Set fetched todo list data
-      // setTodoList(response.data.todoList);
-      setTodoList(result.data.todoList); // Set fetched todoList data
-      // setLoading(false); // 8.8 Set loading to false
-      setIsLoading(false); // 8.16 Turn off loading state
-    });
+    const url = `https://api.airtable.com/v0/${
+      import.meta.env.VITE_AIRTABLE_BASE_ID
+    }/${import.meta.env.VITE_TABLE_NAME}`;
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      const todos = data.records.map((record) => ({
+        title: record.fields.title,
+        id: record.id,
+      }));
+
+      // console.log('Mapped Todos:', todos);
+
+      setTodoList(todos);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(`Fetch error: ${error.message}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
-  // 8.9 Save to localStorage when todoList updates, but only if not loading
-  useEffect(() => {
-    // 8.14 Added isLoading State
-    // if (!loading) {
-    if (!isLoading) {
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-    }
-    // }, [todoList, loading]);
-  }, [todoList, isLoading]);
+  // // 8.5 Simulate async data fetching
+  // useEffect(() => {
+  //   // 8.7 change without reject
+  //   // const fetchData = new Promise((resolve, reject) => {
+  //   const fetchData = new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       // Simulate initial todo list data
+  //       resolve({
+  //         data: {
+  //           todoList: JSON.parse(localStorage.getItem("savedTodoList")) || [], // Getting todoList from localStorage or an empty array
+  //         },
+  //       });
+  //     }, 2000); // 2-second delay to mimic async fetch
+  //   });
 
-  // Function to add a new todo
-  const addTodo = (newTodo) => {
-    setTodoList((prevTodos) => [...prevTodos, newTodo]);
-  };
+  //   // 8.12 change response to result
+  //   // fetchData.then((response) => {
+  //   fetchData.then((result) => {
+  //     // Set fetched todo list data
+  //     // setTodoList(response.data.todoList);
+  //     setTodoList(result.data.todoList); // Set fetched todoList data
+  //     // setLoading(false); // 8.8 Set loading to false
+  //     setIsLoading(false); // 8.16 Turn off loading state
+  //   });
+  // }, []);
 
-  // Function to remove a todo
-  const removeTodo = (id) => {
-    setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  };
+  // // 8.9 Save to localStorage when todoList updates, but only if not loading
+  // useEffect(() => {
+  //   // 8.14 Added isLoading State
+  //   // if (!loading) {
+  //   if (!isLoading) {
+  //     localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+  //   }
+  //   // }, [todoList, loading]);
+  // }, [todoList, isLoading]);
 
-  // 8.10 Change to 8.11
-  // return (
+  // // Function to add a new todo
+  // const addTodo = (newTodo) => {
+  //   setTodoList((prevTodos) => [...prevTodos, newTodo]);
+  // };
+
+  // // Function to remove a todo
+  // const removeTodo = (id) => {
+  //   setTodoList((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  // };
+
+  // // 8.10 Change to 8.11
+  // // return (
+  // //   <>
+  // //     <h1>Todo List</h1>
+  // //     <AddTodoForm onAddTodo={addTodo} />
+  // //     <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+  // //   </>
+  // // );
+  // // 8.11 New version
+  // // 8.13 Change {/* {loading ? ( */} to isLoading */}. Added isLoading State
+  //   return (
   //   <>
-  //     <h1>Todo List</h1>
-  //     <AddTodoForm onAddTodo={addTodo} />
-  //     <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-  //   </>
-  // );
-  // 8.11 New version
-  // 8.13 Change {/* {loading ? ( */} to isLoading */}. Added isLoading State
+  //       <h1>Todo List</h1>
+  //       {isLoading ? (
+  //         <p>Loading...</p>
+  //       ) : (
+  //         <>
+  //         <AddTodoForm onAddTodo={addTodo} />
+  //           <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+  //         </>
+  //       )}
+  //     </>
+  //   );
+  // }
+
   return (
-    <>
-      <h1>Todo List</h1>
+    <div>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <>
-          <AddTodoForm onAddTodo={addTodo} />
-          <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-        </>
+        <ul>
+          {todoList.map((todo) => (
+            <li key={todo.id}>{todo.title}</li>
+          ))}
+        </ul>
       )}
-    </>
+    </div>
   );
 }
