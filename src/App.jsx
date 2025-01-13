@@ -1,6 +1,8 @@
 // import React, { useState, useEffect } from "react"; // Import useState from React
 // import React from "react";
 import React, { useState, useEffect } from "react";
+// 10.1 Setup Router
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import AddTodoForm from "./AddTodoForm"; // Import the new component
 // import TodoList from "./TodoList"; // Import the new component
 
@@ -254,17 +256,45 @@ export default function App() {
   //   );
   // }
 
+  // return (
+  //   <div>
+  //     {isLoading ? (
+  //       <p>Loading...</p>
+  //     ) : (
+  //       <ul>
+  //         {todoList.map((todo) => (
+  //           <li key={todo.id}>{todo.title}</li>
+  //         ))}
+  //       </ul>
+  //     )}
+  //   </div>
+  // );
+
+  // 10.2 Setup Router
   return (
-    <div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {todoList.map((todo) => (
-            <li key={todo.id}>{todo.title}</li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Default Route */}
+        <Route
+          path="/"
+          element={
+            <div>
+              <h1>Todo List</h1>
+              {isLoading ? (
+                <p>Loading...</p>
+              ) : (
+                <ul>
+                  {todoList.map((todo) => (
+                    <li key={todo.id}>{todo.title}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          }
+        />
+        {/* New Route */}
+        <Route path="/new" element={<h1>New Todo List</h1>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
