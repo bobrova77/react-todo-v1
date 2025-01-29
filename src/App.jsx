@@ -2,9 +2,11 @@
 // import React from "react";
 import React, { useState, useEffect } from "react";
 // 10.1 Setup Router
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import AddTodoForm from "./AddTodoForm"; // Import the new component
-// import TodoList from "./TodoList"; // Import the new component
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import "./global.css"; // Import global styles
+import AddTodoForm from "./AddTodoForm"; // Import the new component
+import TodoList from "./TodoList"; // Import the new component
 
 // // 6.8 Custom Hook
 // function useSemiPersistentState(key, initialState) {
@@ -147,41 +149,53 @@ export default function App() {
   // }, [todoList]);
 
   // Fetch Data from Airtable
-  const fetchData = async () => {
-    const options = {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
-      },
-    };
 
-    const url = `https://api.airtable.com/v0/${
-      import.meta.env.VITE_AIRTABLE_BASE_ID
-    }/${import.meta.env.VITE_TABLE_NAME}`;
-
-    try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      const todos = data.records.map((record) => ({
-        title: record.fields.title,
-        id: record.id,
-      }));
-
-      // console.log('Mapped Todos:', todos);
-
-      setTodoList(todos);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(`Fetch error: ${error.message}`);
-    }
-  };
+  // console.log("Base ID:", import.meta.env.VITE_AIRTABLE_BASE_ID);
+  // console.log("Table Name:", import.meta.env.VITE_TABLE_NAME);
+  // console.log("API Token:", import.meta.env.VITE_AIRTABLE_API_TOKEN);
+  // console.log(import.meta.env);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`,
+        },
+      };
+
+      const url = `https://api.airtable.com/v0/${
+        import.meta.env.VITE_AIRTABLE_BASE_ID
+      }/${encodeURIComponent(import.meta.env.VITE_TABLE_NAME)}`;
+
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const todos = data.records.map((record) => ({
+          title: record.fields.title,
+          id: record.id,
+        }));
+
+        // console.log('Mapped Todos:', todos);
+
+        setTodoList(todos);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(`Fetch error: ${error.message}`);
+        // console.error("Loading error:", error);
+        // setError(error.message);
+        // console.error("Loading error:", err);
+        // } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // useEffect(() => {
     fetchData();
   }, []);
 
@@ -273,6 +287,10 @@ export default function App() {
   // 10.2 Setup Router
   return (
     <BrowserRouter>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/new">New Todo</Link>
+      </nav>
       <Routes>
         {/* Default Route */}
         <Route
@@ -283,11 +301,12 @@ export default function App() {
               {isLoading ? (
                 <p>Loading...</p>
               ) : (
-                <ul>
-                  {todoList.map((todo) => (
-                    <li key={todo.id}>{todo.title}</li>
-                  ))}
-                </ul>
+                <>
+                  <AddTodoForm
+                    onAddTodo={(newTodo) => setTodoList([...todoList, newTodo])}
+                  />
+                  <TodoList todoList={todoList} />
+                </>
               )}
             </div>
           }
