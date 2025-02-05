@@ -5,8 +5,8 @@ import React, { useState, useEffect } from "react";
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import "./global.css"; // Import global styles
-import AddTodoForm from "./AddTodoForm"; // Import the new component
-import TodoList from "./TodoList"; // Import the new component
+import AddTodoForm from "./components/AddTodoForm"; // Import the new component
+import TodoList from "./components/TodoList"; // Import the new component
 
 // // 6.8 Custom Hook
 // function useSemiPersistentState(key, initialState) {
@@ -184,7 +184,7 @@ export default function App() {
         // console.log('Mapped Todos:', todos);
 
         setTodoList(todos);
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (error) {
         console.error(`Fetch error: ${error.message}`);
         // console.error("Loading error:", error);
@@ -284,6 +284,14 @@ export default function App() {
   //   </div>
   // );
 
+  const handleAddTodo = (newTodo) => {
+    setTodoList([...todoList, newTodo]);
+  };
+
+  const handleRemoveTodo = (id) => {
+    setTodoList(todoList.filter((todo) => todo.id !== id));
+  };
+
   // 10.2 Setup Router
   return (
     <BrowserRouter>
@@ -302,10 +310,14 @@ export default function App() {
                 <p>Loading...</p>
               ) : (
                 <>
-                  <AddTodoForm
-                    onAddTodo={(newTodo) => setTodoList([...todoList, newTodo])}
+                  {/* <AddTodoForm
+                    onAddTodo={(newTodo) => setTodoList([...todoList, newTodo])} */}
+                  <AddTodoForm onAddTodo={handleAddTodo} />
+                  {/* <TodoList todoList={todoList} /> */}
+                  <TodoList
+                    todoList={todoList}
+                    onRemoveTodo={handleRemoveTodo}
                   />
-                  <TodoList todoList={todoList} />
                 </>
               )}
             </div>
