@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import InputWithLabel from "./InputWithLabel";
+import PropTypes from "prop-types";
 
 // // Lesson 3
 // function AddTodoForm(props) {
@@ -70,23 +70,28 @@ const AddTodoForm = ({ onAddTodo }) => {
   const [todoTitle, setTodoTitle] = React.useState("");
 
   const handleTitleChange = (event) => {
-    setTodoTitle(event.target.value);
+    const newTodoTitle = event.target.value;
+    setTodoTitle(newTodoTitle);
   };
 
-  const handleAddTodo = (event) => {
+  async function handleAddTodo(event) {
     event.preventDefault();
-    if (todoTitle.trim() === "") return;
-    onAddTodo({
+    if (!todoTitle) return;
+
+    const newTodo = {
       title: todoTitle,
       id: Date.now(),
-    });
+    };
+
+    onAddTodo(newTodo);
+    console.log(todoTitle);
     setTodoTitle("");
-  };
+  }
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <form className="Input" onSubmit={handleAddTodo}>
       <InputWithLabel
-        id="todoTitle"
+        className="input"
         value={todoTitle}
         onInputChange={handleTitleChange}
         //   // 7.5 Pass a label prop to the InputWithLabel component with value "Title"
@@ -97,8 +102,10 @@ const AddTodoForm = ({ onAddTodo }) => {
         // // </InputWithLabel> */}
         // // 7.9 Refactor the InputWithLabel component
       >
-        Title
+        <strong>Task:</strong>
+        &nbsp;
       </InputWithLabel>
+      &nbsp; &nbsp;
       <button type="submit">Add</button>
     </form>
   );

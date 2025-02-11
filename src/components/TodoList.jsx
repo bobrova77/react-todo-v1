@@ -1,6 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 import TodoListItem from "./TodoListItem";
+import PropTypes from "prop-types";
 
 // const todoList = [
 //   { id: 1, title: "Complete assignment" },
@@ -32,26 +32,29 @@ import TodoListItem from "./TodoListItem";
 // 7.22 Remove
 // onst TodoList = ({ todoList }) => {
 // 7.23 Pass onRemoveTodo to the TodoListItem component
-const TodoList = ({ todoList, onRemoveTodo }) => {
+const TodoList = ({ todoList, onRemoveTodo, onUpdateTodoTitle }) => {
   return (
-    <ul>
-      {/* <TodoListItem key={todo.id} todo={todo} /> */}
-      {/* 7.24 */}
-      {todoList.map((todo) => (
-        <TodoListItem key={todo.id} todo={todo} onRemoveTodo={onRemoveTodo} />
-      ))}
-    </ul>
+    <div className="TodoLlist">
+      <ul>
+        {todoList.map(function (todo) {
+          return (
+            <TodoListItem
+              key={todo.id}
+              todo={todo}
+              onRemoveTodo={onRemoveTodo}
+              onUpdateTodoTitle={onUpdateTodoTitle}
+            />
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 
 TodoList.propTypes = {
-  todoList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  todoList: PropTypes.array.isRequired,
   onRemoveTodo: PropTypes.func.isRequired,
+  onUpdateTodoTitle: PropTypes.func.isRequired,
 };
 
 export default TodoList;
