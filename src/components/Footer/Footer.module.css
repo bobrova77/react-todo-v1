@@ -1,18 +1,18 @@
 .footerWrapper {
   height: 60px;
   width: 100%;
-  background-color: #f5f5f5; /* Светло-серый фон для более консервативного вида */
+  background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid #efeda7; /* Серая линия разделения */
+  border-top: 1px solid #efeda7;
 }
 
 .footerWrapper p {
   font-size: 12px;
-  font-family: "Libre Baskerville", serif; /* Более классический шрифт */
-  color: #707070; /* Серый цвет текста */
+  font-family: "Libre Baskerville", serif;
+  color: #707070;
   padding: 2px;
-  margin: 0; /* Убираем отступы по умолчанию */
+  margin: 0;
 }
