@@ -10,7 +10,7 @@ const HomePage = () => {
       <img src={img} alt="Todo list image" />
 
       <Link to="/todos">
-        <button>Let's do this</button>
+        <button>Let's do this.</button>
       </Link>
     </div>
   );
