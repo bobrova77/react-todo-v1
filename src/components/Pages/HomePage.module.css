@@ -1,0 +1,31 @@
+.homePageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 10px;
+}
+
+.homePageWrapper h1 {
+  position: relative;
+  top: 0px;
+}
+
+.homePageWrapper button {
+  font-size: 18px;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  padding: 10px 25px;
+  background-color: #f8fad6;
+}
+
+.homePageWrapper button:hover {
+  background-color: #efeda7;
+}
+
+@media all and (max-width: 480px) {
+  .homePageWrapper h1 {
+    top: 90px;
+  }
+}

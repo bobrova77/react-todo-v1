@@ -1,0 +1,41 @@
+.button {
+  border: 1px solid #f8fad6;
+  width: 50px;
+  padding: 8px 0;
+  background-color: #f8f8f8;
+  font-size: 14px;
+  color: #707070;
+  font-family: "Georgia", serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #f8fad6; /* done */
+  border-color: #efeda7; /* done */
+}
+
+.active {
+  background-color: #efeda7; /* done */
+  color: #707070; /* done */
+  border-color: #efeda7; /* done */
+}
+
+.button:nth-child(1) {
+  border-radius: 8px 0px 0px 8px;
+}
+
+.button:nth-child(2) {
+  border-radius: 0;
+}
+
+.button:nth-child(3) {
+  border-radius: 0px 8px 8px 0px;
+}
+
+@media all and (max-width: 480px) {
+  .button {
+    width: 80px; /* Увеличила ширину для мобильных устройств */
+    padding: 10px 0; /* Увеличила padding для удобства нажатия */
+  }
+}

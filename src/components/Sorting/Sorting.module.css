@@ -1,0 +1,29 @@
+.sorting {
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  width: 190px;
+  max-width: 100%;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #efeda7;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.sorting:hover {
+  border-color: #efeda7;
+}
+
+.sorting:focus {
+  border-color: #555;
+  outline: none;
+}
+
+@media all and (max-width: 480px) {
+  .sorting {
+    width: 100%;
+    text-align: center;
+  }
+}
