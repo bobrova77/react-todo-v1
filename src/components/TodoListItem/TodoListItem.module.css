@@ -15,11 +15,11 @@
   font-size: 20px;
   border-radius: 1px;
   border: 2px solid #efeda7;
-  background-color: #efeda7; /* Белый фон */
+  background-color: #efeda7;
 }
 
 .listItem input:hover {
-  border-color: #999; /* Изменим цвет границы при наведении */
+  border-color: #999;
   cursor: pointer;
 }
 
@@ -47,33 +47,33 @@
 }
 
 .edit:hover {
-  background-color: #e0e0e0; /* Светло-серый при наведении */
+  background-color: #e0e0e0;
 }
 
 .delete:hover {
-  background-color: #e0e0e0; /* Светло-серый при наведении */
+  background-color: #e0e0e0;
 }
 
 .date {
-  font-size: 12px; /* Уменьшим размер шрифта */
+  font-size: 12px;
   margin: 0px 0px 3px 35px;
-  color: #999; /* Серый цвет для даты */
+  color: #999;
 
   letter-spacing: 1px;
 }
 
 @media all and (max-width: 480px) {
   .listItem {
-    padding: 5px 10px 0px; /* Уменьшим отступы для мобильных устройств */
+    padding: 5px 10px 0px;
   }
   .listItem button {
     width: 25px;
     height: 25px;
   }
   .listItem input {
-    font-size: 16px; /* Уменьшим размер шрифта для мобильных устройств */
+    font-size: 16px;
   }
   .date {
-    font-size: 10px; /* Уменьшим размер шрифта для мобильных устройств */
+    font-size: 10px;
   }
 }
